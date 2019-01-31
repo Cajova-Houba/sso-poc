@@ -1,15 +1,12 @@
-package org.valesz.ssopoc.server.auth.oauth2;
+package org.valesz.ssopoc.server.oauth2;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -18,11 +15,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Order(545487)
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private AuthorizationEndpoint authorizationEndpoint;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
@@ -32,6 +24,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        // TODO: load this from property file
         clients.inMemory()
                 .withClient("SampleClientId")
                 .secret("secret")

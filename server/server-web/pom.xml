@@ -130,6 +130,13 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+
+        <!-- project dependencies -->
+        <dependency>
+            <groupId>org.valesz.ssopoc.server</groupId>
+            <artifactId>server-oauth2</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

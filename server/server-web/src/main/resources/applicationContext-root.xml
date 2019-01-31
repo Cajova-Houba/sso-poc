@@ -13,4 +13,6 @@
      -->
     <context:component-scan base-package="org.valesz.ssopoc.server.security" />
 
+    <import resource="classpath*:applicationContext-auth.xml" />
+
 </beans>

@@ -16,6 +16,7 @@
 
     <modules>
         <module>server-web</module>
+        <module>server-oauth2</module>
     </modules>
 
     <properties>
