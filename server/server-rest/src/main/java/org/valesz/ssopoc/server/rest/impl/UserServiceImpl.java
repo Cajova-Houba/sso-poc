@@ -1,30 +1,21 @@
 package org.valesz.ssopoc.server.rest.impl;
 
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.valesz.ssopoc.server.rest.UserService;
 
-import javax.security.auth.Subject;
 import javax.ws.rs.core.Response;
-import java.security.Principal;
 
 public class UserServiceImpl implements UserService {
 
     @Override
     public Response me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        final String tmp = auth == null ? "[no auth]" : "["+auth.getName()+"]";
+        if(auth == null) {
+            throw new InsufficientAuthenticationException("There is no client authentication. Try adding an appropriate authentication filter.");
+        }
 
-        return Response.ok(new Principal() {
-            @Override
-            public boolean implies(Subject subject) {
-                return true;
-            }
-
-            @Override
-            public String getName() {
-                return tmp;
-            }
-        }).build();
+        return Response.ok(auth.getPrincipal()).build();
     }
 }

@@ -12,8 +12,9 @@ import java.io.Serializable;
 public interface UserService extends Serializable {
 
     /**
-     * Returns info about currently logged user.
-     * @return
+     * Returns info about currently logged user. If no user is logged in, method throws an exception.
+     *
+     * @return Response containing Principal object with user's data.
      */
     @GET
     Response me();

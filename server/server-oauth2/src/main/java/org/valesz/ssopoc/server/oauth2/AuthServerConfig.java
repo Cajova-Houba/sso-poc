@@ -1,6 +1,9 @@
 package org.valesz.ssopoc.server.oauth2;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -11,8 +14,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 @EnableAuthorizationServer
+@PropertySource({"classpath:client.properties"})
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    /**
+     * For getting values from property file.
+     */
+    @Autowired
+    private Environment env;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
@@ -22,12 +31,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // TODO: load this from property file (default properties in this module, then override it with real properties in web module
         clients.inMemory()
-                .withClient("SampleClientId")
-                .secret("secret")
-                .authorizedGrantTypes("authorization_code")
-                .scopes("user_info")
+                .withClient(env.getProperty("client.id"))
+                .secret(env.getProperty("client.secret"))
+                .authorizedGrantTypes(env.getProperty("client.authorizedGrantTypes"))
+                .scopes(env.getProperty("client.scopes"))
                 .autoApprove(true)
                 .redirectUris("http://localhost:8082/ui/login",
                         "http://localhost:8083/ui2/login",
