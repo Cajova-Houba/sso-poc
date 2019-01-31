@@ -55,27 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // /ui/ is accessible to all
-        // /auth/oauth/authorize is accessible only to logged users
-        // /auth/oauth/token is accessible only to logged users
-        // /ui/user is accessible only to logged users
-//        http.csrf().disable()
-//                    .requestMatchers()
-//                        .antMatchers("/oauth/authorize").authenticated()
-//                        .antMatchers("/ui/", "/ui/login", "/resources/**").permitAll()
-//
-//                        // token related endpoint are secured by spring configuration, if they're mapped to web root
-//                        // so in this case /oauth/token, /oauth/token_key and /oauth/check_token endpoints are secured by autoconfig
-//                        // but following three ones are not
-////                        .antMatchers("/oauth/token").authenticated()
-////                        .antMatchers("/oauth/token_key").access("permitAll()")
-////                        .antMatchers("/oauth/check_token").access("isAuthenticated()")
-//
-//                        .antMatchers("/ui/user").authenticated()
-//                        .antMatchers("/user/me").authenticated()
-//                        .anyRequest().authenticated()
-//                .and().formLogin().loginPage("/ui/login").permitAll();
-//                .and().addFilter(new SecurityContextPersistenceFilter()).securityContext();
 
         http.csrf().disable()
                 .requestMatchers().antMatchers("/auth/oauth/authorize")

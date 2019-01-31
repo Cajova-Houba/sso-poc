@@ -10,6 +10,7 @@
 		<param-value>
 			classpath*:applicationContext-root.xml
 			classpath*:applicationContext-auth.xml
+			classpath*:applicationContext-cxf.xml
 		</param-value>
 	</context-param>
 
@@ -48,6 +49,20 @@
 		<filter-name>wicket.wicket-7-spring-security</filter-name>
 		<url-pattern>/ui/*</url-pattern>
 	</filter-mapping>
+
+
+	<!-- cxf servlet for rest api -->
+	<servlet>
+		<description>Apache CXF Endpoint</description>
+		<display-name>cxf</display-name>
+		<servlet-name>cxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>cxf</servlet-name>
+		<url-pattern>/api/v1/*</url-pattern>
+	</servlet-mapping>
 
 
     <!-- dispatcher for handling oauth2 endpoints -->
