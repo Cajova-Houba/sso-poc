@@ -30,7 +30,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         mountPage("login", LoginPage.class);
-//        mountPage("user", UserPage.class);
+        mountPage("user", UserPage.class);
     }
 
     @Override

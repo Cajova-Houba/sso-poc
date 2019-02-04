@@ -18,4 +18,14 @@ public class UserServiceImpl implements UserService {
 
         return Response.ok(auth.getPrincipal()).build();
     }
+
+    @Override
+    public Response myData() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null) {
+            throw new InsufficientAuthenticationException("There is no client authentication. Try adding an appropriate authentication filter.");
+        }
+
+        return Response.ok(new DataVO()).build();
+    }
 }

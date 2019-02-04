@@ -7,7 +7,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 
-@Path("/user/me")
 @Produces(MediaType.APPLICATION_JSON)
 public interface UserService extends Serializable {
 
@@ -16,6 +15,16 @@ public interface UserService extends Serializable {
      *
      * @return Response containing Principal object with user's data.
      */
+    @Path("/user/me")
     @GET
     Response me();
+
+    /**
+     * Returns object representing user's data. Actual values in data object are not relevant.
+     *
+     * @return
+     */
+    @Path("/user/me/data")
+    @GET
+    Response myData();
 }

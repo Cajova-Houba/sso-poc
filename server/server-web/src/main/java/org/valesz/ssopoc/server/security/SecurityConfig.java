@@ -57,12 +57,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
-                .requestMatchers().antMatchers("/auth/oauth/authorize")
+                .requestMatchers().antMatchers("/auth/oauth/authorize", "/ui/*", "/auth/oauth/revoke-token")
                     .and()
                     .authorizeRequests()
+                        .antMatchers("/ui/").permitAll()
+                        .antMatchers("/ui/login").anonymous()
+                        .antMatchers("/ui/logout").authenticated()
+//                        .antMatchers("/auth/oauth/revoke-token").authenticated()
                         .anyRequest().authenticated()
                     .and()
-                    .formLogin().loginPage("/ui/login").permitAll();
+                    .formLogin()
+                        .loginPage("/ui/login")
+                        .defaultSuccessUrl("/ui")
+                    .and()
+                    .logout()
+                        .logoutUrl("/ui/logout")
+                        .logoutSuccessUrl("/ui")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "UISESSION");
     }
 
     @Override

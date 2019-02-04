@@ -1,0 +1,48 @@
+package org.valesz.ssopoc.server.rest.impl;
+
+import java.io.Serializable;
+import java.util.Random;
+import java.util.UUID;
+
+/**
+ * Simple class representing user's data.
+ */
+public class DataVO implements Serializable {
+
+    private String name;
+
+    private int value1;
+
+    private int value2;
+
+    public DataVO() {
+        Random r = new Random();
+        name = UUID.randomUUID().toString();
+        value1 = r.nextInt();
+        value2 = r.nextInt();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getValue1() {
+        return value1;
+    }
+
+    public void setValue1(int value1) {
+        this.value1 = value1;
+    }
+
+    public int getValue2() {
+        return value2;
+    }
+
+    public void setValue2(int value2) {
+        this.value2 = value2;
+    }
+}

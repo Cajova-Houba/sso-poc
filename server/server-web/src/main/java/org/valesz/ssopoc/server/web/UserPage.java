@@ -18,6 +18,7 @@ package org.valesz.ssopoc.server.web;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -43,7 +44,7 @@ public class UserPage extends WebPage {
 
             @Override
             public void onClick() {
-                getSession().invalidate();
+                throw new RedirectToUrlException("/ui/logout");
             }
 
         });
