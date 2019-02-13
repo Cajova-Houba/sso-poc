@@ -25,6 +25,7 @@ public class HomePage extends WebPage {
 			}
 
 		};
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof User) {
 			String username = ((User) principal).getUsername();

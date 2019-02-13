@@ -15,6 +15,7 @@
  */
 package org.valesz.ssopoc.server.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -26,6 +27,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  *
@@ -39,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig() {
         super(false);
     }
+
+    @Autowired(required = false)
+    private LogoutSuccessHandler oauth2PostLogout;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -56,30 +61,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        String uiPrefix = "";
         http.csrf().disable()
-                .requestMatchers().antMatchers("/auth/oauth/authorize", "/ui/*", "/auth/oauth/revoke-token")
+                .requestMatchers().antMatchers("/auth/oauth/authorize", "/","/login", "/signout", "/user")
                     .and()
                     .authorizeRequests()
-                        .antMatchers("/ui/").permitAll()
-                        .antMatchers("/ui/login").anonymous()
-                        .antMatchers("/ui/logout").authenticated()
-//                        .antMatchers("/auth/oauth/revoke-token").authenticated()
+                        .antMatchers(uiPrefix+"/").permitAll()
+                        .antMatchers(uiPrefix+"/login").anonymous()
+                        .antMatchers(uiPrefix+"/signout").authenticated()
                         .anyRequest().authenticated()
                     .and()
                     .formLogin()
-                        .loginPage("/ui/login")
-                        .defaultSuccessUrl("/ui")
+                        .loginPage(uiPrefix+"/login")
+                        .defaultSuccessUrl(uiPrefix+"/")
                     .and()
-                    .logout()
-                        .logoutUrl("/ui/logout")
-                        .logoutSuccessUrl("/ui")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "UISESSION");
+//                    .logout()
+//                        .logoutUrl(uiPrefix+"/logout")
+//                        .logoutSuccessUrl(uiPrefix+"/")
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID", "UISESSION")
+        ;
+
+        if (oauth2PostLogout != null) {
+            http.logout().logoutSuccessHandler(oauth2PostLogout);
+        }
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.debug(true);
+        web.debug(false);
     }
 
 

@@ -11,6 +11,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response me() {
+        System.out.println("User endpoint.");
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth == null) {
             throw new InsufficientAuthenticationException("There is no client authentication. Try adding an appropriate authentication filter.");
@@ -21,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response myData() {
+        System.out.println("Data endpoint.");
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth == null) {
             throw new InsufficientAuthenticationException("There is no client authentication. Try adding an appropriate authentication filter.");

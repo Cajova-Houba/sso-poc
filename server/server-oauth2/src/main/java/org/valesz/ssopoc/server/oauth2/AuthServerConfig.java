@@ -1,6 +1,7 @@
 package org.valesz.ssopoc.server.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -9,6 +10,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -22,6 +25,15 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Autowired
     private Environment env;
+
+    /**
+     * Token store is needed for revoking all tokens connected to logged user.
+     * @return
+     */
+    @Bean
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
+    }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
@@ -49,6 +61,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         // it will set the prefix which is then used for securing token endpoints in AuthorizationServerSecurityConfiguration
         // the prefix itself also used in web module in dispatcher servlet mapping in web.xml
         endpoints.getFrameworkEndpointHandlerMapping().setPrefix("/auth");
+        endpoints.tokenStore(tokenStore());
     }
 
 

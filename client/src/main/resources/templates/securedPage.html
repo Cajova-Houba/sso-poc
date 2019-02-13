@@ -11,7 +11,13 @@
 <div class="container">
     <div class="col-sm-12">
         <h1>Secured Page</h1>
-        Welcome, <span th:text="${authentication.name}">Name</span>
+        Welcome, <span th:text="${authentication.name}">Name</span> <br>
+
+        Token: <span th:text="${token}"></span> <br>
+
+        <a class="btn btn-primary" href="/ui/dataPage">My Data</a> <br>
+
+        <a class="btn btn-primary" href="/ui/logmeout">Logout</a>
     </div>
 </div>
 </body>
