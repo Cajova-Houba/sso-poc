@@ -1,6 +1,8 @@
 package org.valesz.sso.testclient1;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,9 +13,14 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
+@PropertySource("classpath:rest.properties")
 public class SecuredPageController {
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private OAuth2ClientContext oAuth2ClientContext;
@@ -23,19 +30,25 @@ public class SecuredPageController {
 
     @RequestMapping(value = "/dataPage")
     public String dataPage(Model model) {
-        String dataUrl = "http://myoauth2:8081/api/v1/user/me/data";
+        String dataUrl = env.getProperty("userdata.url", "http://notfound.asdf");
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(resourceDetails, oAuth2ClientContext);
-        ResponseEntity<DataVO> responseEntity = oAuth2RestTemplate.getForEntity(dataUrl, DataVO.class);
         DataVO data;
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            data = responseEntity.getBody();
-        } else {
+        try {
+            ResponseEntity<DataVO> responseEntity = oAuth2RestTemplate.getForEntity(dataUrl, DataVO.class);
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                data = responseEntity.getBody();
+            } else {
+                data = new DataVO();
+                data.setName("error");
+                data.setValue1(responseEntity.getStatusCode().value());
+            }
+        } catch (HttpClientErrorException.NotFound ex) {
             data = new DataVO();
-            data.setName("error");
-            data.setValue1(responseEntity.getStatusCode().value());
+            data.setName("Error: "+dataUrl);
+            data.setValue1(404);
         }
-        model.addAttribute("data", data);
 
+        model.addAttribute("data", data);
         return "dataPage.html";
     }
 

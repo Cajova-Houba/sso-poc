@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Spring Security SSO</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+</head>
+
+<body>
+<div class="container">
+    <div class="col-sm-12">
+        <h1>User's data page</h1>
+        Name: <span th:text="${data.name}"></span><br>
+        Value 1: <span th:text="${data.value1}"></span><br>
+        Value 2: <span th:text="${data.value2}"></span><br>
+        <p/>
+    </div>
+</div>
+</body>
+</html>

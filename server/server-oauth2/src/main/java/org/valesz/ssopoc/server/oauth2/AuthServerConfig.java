@@ -51,7 +51,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .autoApprove(true)
                 .redirectUris("http://localhost:8082/ui/login",
                         "http://localhost:8083/ui2/login",
-                        "http://localhost:8080/login/oauth2/code/client");
+                        "http://localhost:8080/login");
     }
 
     @Override
